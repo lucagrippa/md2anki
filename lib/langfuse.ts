@@ -1,15 +1,4 @@
 import { Langfuse, LangfuseTraceClient } from "langfuse";
-import { CallbackHandler } from "langfuse-langchain";
-
-export function getCallbackHandler() {
-    const langfuseHandler = new CallbackHandler({
-        secretKey: process.env.LANGFUSE_SECRET_KEY,
-        publicKey: process.env.NEXT_PUBLIC_LANGFUSE_PUBLIC_KEY,
-        baseUrl: process.env.NEXT_PUBLIC_LANGFUSE_HOST,
-    });
-
-    return langfuseHandler
-}
 
 /**
  * Initializes and returns a Langfuse instance.

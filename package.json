@@ -39,7 +39,6 @@
     "jszip": "^3.10.1",
     "langchain": "^0.2.8",
     "langfuse": "^3.13.0",
-    "langfuse-langchain": "^3.12.2",
     "langfuse-vercel": "^3.17.0",
     "loglevel": "^1.9.1",
     "lucide-react": "^0.400.0",

@@ -1,15 +1,11 @@
 import { Button } from "@/components/ui/button"
 import {
-    Dialog,
-    DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
     DialogClose,
 } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
@@ -28,7 +24,7 @@ export function FlashcardDialog({ flashcard, index, updateFlashcard }: DialogPro
             <DialogHeader>
                 <DialogTitle>Edit flashcard</DialogTitle>
                 <DialogDescription>
-                    Make changes to your flashcard here. Click save when you're done.
+                    Make changes to your flashcard here. Click save when you&apos;re done.
                 </DialogDescription>
             </DialogHeader>
             <form onSubmit={(e) => {
