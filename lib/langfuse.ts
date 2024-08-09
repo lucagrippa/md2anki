@@ -6,9 +6,9 @@ import { Langfuse, LangfuseTraceClient } from "langfuse";
  * @throws {Error} If required environment variables are missing.
  */
 export function getLangfuse(): Langfuse {
-    const publicKey = process.env.NEXT_PUBLIC_LANGFUSE_PUBLIC_KEY;
+    const publicKey = process.env.LANGFUSE_PUBLIC_KEY;
     const secretKey = process.env.LANGFUSE_SECRET_KEY;
-    const baseUrl = process.env.NEXT_PUBLIC_LANGFUSE_HOST;
+    const baseUrl = process.env.LANGFUSE_HOST;
 
     if (!publicKey || !secretKey) {
         throw new Error('Langfuse public key or secret key is missing in environment variables.');
