@@ -17,6 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script async src="https://cdn.seline.so/seline.js"></script>
+      </head>
       <body className={inter.className + " min-h-screen"}>
         <main className="flex flex-col items-center min-h-screen">
           {children}
@@ -34,6 +37,9 @@ export default function RootLayout({
             </div>
             <div>
               <a className="" href="https://github.com/lucagrippa/md2anki">source</a>
+              {" / "}
+              <a className="" href="https://md2anki.canny.io">features</a>
+
             </div>
           </div>
 
