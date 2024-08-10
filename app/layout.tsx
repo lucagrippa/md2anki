@@ -22,8 +22,8 @@ export default function RootLayout({
           {children}
         </main>
         <footer className="fixed bottom-0 left-0 right-0 p-4 bg-background flex flex-col">
-          <div className="flex flex-row justify-between font-mono text-muted-foreground text-sm">
-            <div>
+          <div className="flex flex-row justify-center md:justify-between font-mono text-muted-foreground text-sm">
+            <div className="hidden md:block">
               <a className="" href="https://lucagrippa.io" >lucagrippa </a>
             </div>
             <div>
@@ -32,7 +32,7 @@ export default function RootLayout({
               &{" "}
               <a className="" href="https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/" > GPT-4o mini</a>
             </div>
-            <div>
+            <div className="hidden md:block">
               <a className="" href="https://github.com/lucagrippa/md2anki">source</a>
               {" / "}
               <a className="" href="https://md2anki.canny.io">features</a>
