@@ -72,10 +72,8 @@ export default function GenerateDeck() {
     });
 
     // File handling functions
-    const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files[0]) {
-            setFile(event.target.files[0]);
-        }
+    const handleFileChange = async (file: File) => {
+        setFile(file);
     };
 
     const handleFileRemove = async (event: React.MouseEvent<HTMLElement>) => {
@@ -87,7 +85,6 @@ export default function GenerateDeck() {
             setIsLoading(true); // Set loading state to true
 
             toast({
-                title: "In progress",
                 description: "Generating your Anki deck...",
             });
 
@@ -101,7 +98,6 @@ export default function GenerateDeck() {
         } catch (error) {
             console.error("Error generating deck:", error);
             toast({
-                title: "Error",
                 description: "Failed to generate Anki deck. Please try again.",
                 variant: "destructive",
             });
@@ -113,7 +109,6 @@ export default function GenerateDeck() {
         log.debug(values)
         if (!file) {
             toast({
-                title: "Error",
                 description: "Please upload a markdown file",
                 variant: "destructive",
             });
@@ -130,8 +125,7 @@ export default function GenerateDeck() {
 
         if (!file) {
             toast({
-                title: "Error",
-                description: "No file available",
+                description: "Regenerate not available",
                 variant: "destructive",
             });
             return;
@@ -179,8 +173,7 @@ export default function GenerateDeck() {
 
         if (deletedFlashcard) {
             toast({
-                title: "Flashcard deleted",
-                description: `Question: ${deletedFlashcard.question?.substring(0, 30) || 'N/A'}...`,
+                description: "Flashcard deleted",
                 variant: "destructive",
                 action: <ToastAction
                     altText="Undo"
@@ -191,7 +184,6 @@ export default function GenerateDeck() {
             });
         } else {
             toast({
-                title: "Error",
                 description: "Failed to delete flashcard",
                 variant: "destructive"
             });
@@ -255,8 +247,8 @@ export default function GenerateDeck() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center mt-36 mb-24 w-full sm:max-w-xl md:max-w-xl lg:max-w-xl">
-            <h1 className="font-medium text-xl mb-6"> md2anki</h1>
+        <div className="flex flex-col items-center justify-center mt-36 mb-24 px-8 w-full sm:max-w-xl md:max-w-xl lg:max-w-xl">
+            <h1 className="font-medium text-xl mb-6 cursor-pointer hover:text-primary/75 transition-colors" onClick={() => window.location.reload()}> md2anki</h1>
             <div className="flex flex-col items-center justify-center w-full max-w-xl">
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid w-full items-start gap-6">
