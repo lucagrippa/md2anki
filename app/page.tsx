@@ -1,4 +1,5 @@
 "use client";
+import * as seline from '@seline-analytics/web';
 
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -57,6 +58,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>
 
 export default function GenerateDeck() {
+    seline.init();
     const { toast } = useToast()
     const [file, setFile] = useState<File | null>(null);
     const [generation, setGeneration] = useState<PartialGeneration>({ deck_name: "", flashcards: [] });
@@ -119,6 +121,7 @@ export default function GenerateDeck() {
         }
 
         const text = await file.text();
+        seline.track("user: generate", { file: file.name });
         await handleFlashcardGeneration(text);
     }
 
@@ -135,12 +138,19 @@ export default function GenerateDeck() {
         }
 
         const text = await file.text();
+        seline.track("user: regenerate", { file: file.name });
         await handleFlashcardGeneration(text);
     };
 
     const updateFlashcard = (index: number, updatedFlashcard: { question: string; answer: string }) => {
         setGeneration(prevState => {
             const newFlashcards = [...(prevState.flashcards || [])];
+            seline.track("user: update card", {
+                question: newFlashcards[index]?.question,
+                answer: newFlashcards[index]?.answer,
+                updated_question: updatedFlashcard.question,
+                updated_answer: updatedFlashcard.answer,
+            });
             newFlashcards[index] = updatedFlashcard;
             return { flashcards: newFlashcards };
         });
@@ -155,6 +165,10 @@ export default function GenerateDeck() {
         setGeneration(prevState => {
             const newFlashcards = [...(prevState.flashcards || [])];
             if (index >= 0 && index < newFlashcards.length) {
+                seline.track("user: delete card", {
+                    question: newFlashcards[index]?.question,
+                    answer: newFlashcards[index]?.answer,
+                });
                 const deleted = newFlashcards.splice(index, 1);
                 if (deleted.length > 0) {
                     deletedFlashcard = deleted[0] as { question: string; answer: string };
@@ -187,6 +201,10 @@ export default function GenerateDeck() {
     const undoDelete = (flashcard: { question: string; answer: string }, index: number) => {
         setGeneration(prevState => {
             const newFlashcards = [...(prevState.flashcards || [])];
+            seline.track("user: undo delete card", {
+                question: newFlashcards[index]?.question,
+                answer: newFlashcards[index]?.answer,
+            });
             newFlashcards.splice(index, 0, flashcard);
             return { flashcards: newFlashcards };
         });
@@ -194,6 +212,10 @@ export default function GenerateDeck() {
 
     function downloadDeck(partialGeneration: PartialGeneration) {
         log.debug('Downloading deck...');
+
+        seline.track("user: download", {
+            file: file?.name,
+        });
 
         // Create a deck and add notes
         log.debug(`Deck: ${partialGeneration.deck_name}`);

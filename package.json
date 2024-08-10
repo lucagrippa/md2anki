@@ -23,6 +23,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.1",
     "@radix-ui/react-tooltip": "^1.1.2",
+    "@seline-analytics/web": "^0.0.14",
     "@types/file-saver": "^2.0.7",
     "@types/jszip": "^3.4.1",
     "@types/sql.js": "^1.4.9",
