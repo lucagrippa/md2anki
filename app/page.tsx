@@ -244,6 +244,9 @@ export default function GenerateDeck() {
         myPackage.writeToFile(`${partialGeneration.deck_name?.toLowerCase().replace(/ /g, '-')}-md2anki.apkg`)
             .then(() => log.debug("Anki package created successfully!"))
             .catch(error => log.error("Error creating Anki package:", error));
+        toast({
+            description: "Deck downloaded successfully",
+        });
     }
 
     return (
