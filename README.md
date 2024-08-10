@@ -1,36 +1,74 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# md2anki: AI-Powered Anki Flashcard Generator
+![GitHub License](https://img.shields.io/github/license/lucagrippa/md2anki)
 
-## Getting Started
 
-First, run the development server:
+md2anki is an open-source web app that uses AI to generate Anki flashcards from Markdown files, making it easier to turn your notes into study materials.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Built with the [Vercel AI SDK](https://sdk.vercel.ai), [GPT-4o-mini](https://platform.openai.com/docs/models/gpt-4o-mini), [Next.js](https://nextjs.org), [Langfuse](https://langfuse.com), and [Seline.so](https://seline.so).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+<!-- add gif -->
+![How to use md2anki](public/md2anki.gif)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Upload a Markdown file containing the content you want to convert into flashcards.
+2. Click the "Generate flashcards" button to start the AI-powered generation process.
+3. Review and edit the generated flashcards as needed.
+4. Download the flashcards as an Anki-compatible `.apkg` file.
+5. Import the `.apkg` file into Anki to start studying!
 
-## Learn More
+## Development 
 
-To learn more about Next.js, take a look at the following resources:
+### Prerequisites
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- Node.js (v14 or later)
+- npm or yarn
+- OpenAI API key
+- (Optional) Seline.so and Langfuse accounts for analytics
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Installation
 
-## Deploy on Vercel
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/md2anki.git
+   cd md2anki
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+   or
+   ```bash
+   yarn install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+3. Set up environment variables:
+   Create a `.env.local` file in the root directory and add the following:
+   ```env
+   OPENAI_API_KEY=your_openai_api_key
+   OPENAI_MODEL=your_openai_model (optional, defaults to `gpt-4o-mini-2024-07-18`)
+   LANGFUSE_PUBLIC_KEY=your_langfuse_public_key (optional)
+   LANGFUSE_SECRET_KEY=your_langfuse_secret_key (optional)
+   LANGFUSE_HOST=your_langfuse_host (optional)
+   ```
+
+4. Run the development server:
+   ```bash
+   npm run dev
+   ```
+   or
+   ```bash
+   yarn dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the GPL-3.0 License. See the [LICENSE](LICENSE) file for details.
+
