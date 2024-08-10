@@ -6,6 +6,8 @@ md2anki is an open-source web app that uses AI to generate Anki flashcards from 
 
 Built with the [Vercel AI SDK](https://sdk.vercel.ai), [GPT-4o-mini](https://platform.openai.com/docs/models/gpt-4o-mini), [Next.js](https://nextjs.org), [Langfuse](https://langfuse.com), and [Seline.so](https://seline.so).
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fhello-world&env=OPENAI_API_KEY,OPENAI_MODEL,LANGFUSE_SECRET_KEY,LANGFUSE_PUBLIC_KEY,LANGFUSE_HOST&project-name=md2anki&repository-name=md2anki)
+
 <!-- add gif -->
 ![How to use md2anki](public/md2anki.gif)
 
