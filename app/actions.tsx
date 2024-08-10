@@ -90,7 +90,6 @@ async function processPages(
                 schema: generationSchema,
                 mode: "tool",
                 temperature: 0.0,
-                experimental_telemetry: { isEnabled: true },
                 onFinish: async (event) => updateGeneration(finalCards, event, generation),
             })
                 .then(async ({ partialObjectStream }) => {
