@@ -42,7 +42,7 @@ import { Package } from '../lib/anki/Package';
 
 // Configuration
 export const dynamic = "force-dynamic";
-export const maxDuration = 30;
+export const maxDuration = 60;
 
 // Set log level based on environment
 if (process.env.NODE_ENV === 'development') {
