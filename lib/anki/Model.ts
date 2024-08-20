@@ -194,7 +194,7 @@ class Model {
             tmpl.bqfmt = tmpl.bqfmt || "";
             tmpl.bfont = tmpl.bfont || "";
             tmpl.bsize = tmpl.bsize || 0;
-            tmpl.did = tmpl.did === undefined ? null : tmpl.did;  // TODO: Should this be deckId?
+            tmpl.did = tmpl.did === undefined ? null : tmpl.did; 
         });
 
         this.fields.forEach((field, ord) => {
