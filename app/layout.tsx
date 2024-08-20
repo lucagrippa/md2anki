@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Inter } from "next/font/google";
 import { UserButton } from "@stackframe/stack";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +30,7 @@ export default function RootLayout({
                                 <a className="text-primary" href="/">
                                     Flashcards
                                 </a>
-                                
+
                                 <a className="text-primary" href="/summarize">
                                     Summarize
                                 </a>
@@ -76,6 +77,7 @@ export default function RootLayout({
                             </div>
                         </footer>
                         <Toaster />
+                        <Analytics />
                     </StackTheme>
                 </StackProvider>
             </body>
