@@ -191,7 +191,7 @@ export default function GenerateDeck() {
 
     //TODO: support urls also
 
-    const useGemini = (fileType: string) => {
+    const shouldUseGemini = (fileType: string) => {
         return (
             fileType === "application/pdf" ||
             fileType.startsWith("image/") ||
@@ -214,7 +214,7 @@ export default function GenerateDeck() {
             });
             return;
         } else {
-            if (useGemini(file.type)) {
+            if (shouldUseGemini(file.type)) {
                 toast({
                     description: "Extracting text from file...",
                 });
