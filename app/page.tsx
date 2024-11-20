@@ -7,7 +7,6 @@ import log from 'loglevel';
 import { experimental_useObject as useObject } from "ai/react";
 import { flashcardsSchema, flashcardSchemaObject } from "@/lib/schema";
 import { ArrowDownToLine, Sparkles, RefreshCw } from 'lucide-react';
-import { CoreUserMessage, CoreAssistantMessage } from 'ai';
 
 // UI component imports
 import { Button } from "@/components/ui/button";
@@ -33,8 +32,7 @@ if (process.env.NODE_ENV === 'development') {
 export default function GenerateDeck() {
     const [file, setFile] = useState<File | null>(null);
     const [instructions, setInstructions] = useState<string>("");
-    const [chatHistory, setChatHistory] = useState<(CoreUserMessage | CoreAssistantMessage)[]>([]);
-
+    
     const {
         object: flashcardsObject,
         submit: submitObject,
