@@ -1,4 +1,4 @@
-import { ArrowDownToLine } from 'lucide-react';
+import { RefreshCw } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import {
     Tooltip,
@@ -7,21 +7,22 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-type DownloadButtonProps = {
+type RegenerateButtonProps = {
+    submitObject: (input: any) => void;
     isLoading: boolean;
 };
 
-export function DownloadButton({ isLoading }: DownloadButtonProps) {
+export function RegenerateButton({ submitObject, isLoading }: RegenerateButtonProps) {
     return (
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <Button variant="secondary" size="icon" disabled={isLoading === true} onClick={() => downloadDeck()} className="">
-                        <ArrowDownToLine className="h-4 w-4" />
+                    <Button variant="ghost" size="icon" disabled={isLoading === true} onClick={() => submitObject(null)} className="p-2">
+                        <RefreshCw className="h-5 w-5" />
                     </Button>
                 </TooltipTrigger>
                 <TooltipContent>
-                    Download as .apkg
+                    Re-generate flashcards
                 </TooltipContent>
             </Tooltip>
         </TooltipProvider>
@@ -29,6 +30,6 @@ export function DownloadButton({ isLoading }: DownloadButtonProps) {
 }
 
 // Implement the downloadDeck function
-function downloadDeck() {
+function regenerateFlashcards() {
     // Logic to download the deck
 }
