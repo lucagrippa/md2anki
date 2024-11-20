@@ -35,6 +35,32 @@ export default function GenerateDeck() {
     const [instructions, setInstructions] = useState<string>("");
     const [chatHistory, setChatHistory] = useState<(CoreUserMessage | CoreAssistantMessage)[]>([]);
 
+    const handleSubmit = async () => {
+        if (file) {
+            try {
+                const newUserMessages: CoreUserMessage[] = [];
+        
+                // Add file content only if chat history is empty
+                if (chatHistory.length === 0) {
+                    const fileContent = await file.text();
+                    newUserMessages.push({ role: "user", content: fileContent });
+                }
+                
+                // Add the new instructions if not empty
+                if (instructions) {
+                    newUserMessages.push({ role: "user", content: instructions });
+                }
+
+                setChatHistory(prev => [...prev, ...newUserMessages]);
+                submitObject({ messages: newUserMessages });
+                setInstructions(''); // Clear the input after submission
+            } catch (error) {
+                console.error('Error reading file:', error);
+                // You might want to show an error message to the user here
+            }
+        }
+    };
+
     const {
         object: flashcardsObject,
         submit: submitObject,
@@ -57,7 +83,7 @@ export default function GenerateDeck() {
                                     file={file}
                                     instructions={instructions}
                                     setInstructions={setInstructions}
-                                    submitObject={submitObject}
+                                    onSubmit={handleSubmit}
                                     isLoading={isLoadingObject}
                                 />
                                 <Nudges setInstructions={setInstructions} />
