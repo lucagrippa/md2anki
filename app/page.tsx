@@ -1,120 +1,104 @@
 "use client";
-import * as seline from '@seline-analytics/web';
 
 import { useState } from "react";
-import { z } from "zod";
-import log from 'loglevel';
+import { Message } from "ai";
 import { experimental_useObject as useObject } from "ai/react";
-import { flashcardsSchema, flashcardSchemaObject } from "@/lib/schema";
-import { ArrowDownToLine, Sparkles, RefreshCw } from 'lucide-react';
-import { CoreUserMessage, CoreAssistantMessage } from 'ai';
+import { flashcardSchemaObject, Flashcard } from "@/lib/schema";
 
-// UI component imports
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator"
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs"
+import {
+    ResizableHandle,
+    ResizablePanel,
+    ResizablePanelGroup,
+} from "@/components/ui/resizable"
+import { ScrollArea } from "@/components/ui/scroll-area"
 
-// Custom component imports
 import { FileInput } from "@/components/file-input";
 import { FileCard } from "@/components/file-card";
 import { FlashcardCard } from "@/components/flashcard-v2";
-import { DownloadButton } from "@/components/download-button";
-import { RegenerateButton } from "@/components/regenerate-button";
 import { ChatInput } from "@/components/chat-input";
-import { Nudges } from "@/components/nudges";
-
-// Set log level based on environment
-if (process.env.NODE_ENV === 'development') {
-    log.setLevel('debug');
-} else {
-    log.setLevel('error');
-}
-// Form schema definition
+import { ChatInterface } from "@/components/chat-interface";
+import { MarkdownViewer } from "@/components/markdown-viewer";
 
 export default function GenerateDeck() {
     const [file, setFile] = useState<File | null>(null);
-    const [instructions, setInstructions] = useState<string>("");
-    const [chatHistory, setChatHistory] = useState<(CoreUserMessage | CoreAssistantMessage)[]>([]);
+    const [chatHistory, setChatHistory] = useState<(Message)[]>([]);
+    const [flashcards, setFlashcards] = useState<Flashcard[]>([]);
 
-    const handleSubmit = async () => {
-        if (file) {
-            try {
-                const newUserMessages: CoreUserMessage[] = [];
-        
-                // Add file content only if chat history is empty
-                if (chatHistory.length === 0) {
-                    const fileContent = await file.text();
-                    newUserMessages.push({ role: "user", content: fileContent });
-                }
-                
-                // Add the new instructions if not empty
-                if (instructions) {
-                    newUserMessages.push({ role: "user", content: instructions });
-                }
-
-                setChatHistory(prev => [...prev, ...newUserMessages]);
-                submitObject({ messages: newUserMessages });
-                setInstructions(''); // Clear the input after submission
-            } catch (error) {
-                console.error('Error reading file:', error);
-                // You might want to show an error message to the user here
-            }
-        }
-    };
-
-    const {
-        object: flashcardsObject,
-        submit: submitObject,
-        isLoading: isLoadingObject,
-    } = useObject({
+    const { object, submit, isLoading, stop } = useObject({
         api: "/api/generate",
         schema: flashcardSchemaObject,
     });
 
-    return (
-        <div className="flex flex-col items-center justify-center mt-36 mb-24 px-8 w-full sm:max-w-xl md:max-w-xl lg:max-w-xl">
-            <h1 className="font-medium text-4xl mb-6 cursor-pointer hover:text-primary/75 transition-colors" onClick={() => window.location.reload()}> md2anki</h1>
-            {file ? (
-                <>
-                    <div className="grid w-full items-start gap-6">
-                        <FileCard file={file} setFile={setFile} />
-                        {isLoadingObject === false && flashcardsObject === undefined && (
-                            <div className="flex flex-col space-y-4">
-                                <ChatInput
-                                    file={file}
-                                    instructions={instructions}
-                                    setInstructions={setInstructions}
-                                    onSubmit={handleSubmit}
-                                    isLoading={isLoadingObject}
-                                />
-                                <Nudges setInstructions={setInstructions} />
-                            </div>
-                        )}
+    const handleSubmit = async (query: string) => {
+        console.log("query", query);
+        console.log("chat history", chatHistory);
+        console.log("file", file);
+        setChatHistory([...chatHistory, {
+            role: "user",
+            content: query,
+            id: crypto.randomUUID()
+        }]);
 
-                        {flashcardsObject && (
-                            <div className="space-y-2">
-                                <div className="flex justify-between items-center w-full mb-0">
-                                    <span className="ml-1 font-normal">{flashcardsObject?.flashcards?.length || 0} flashcards</span>
+        if (file) {
+            const fileContent = await file.text();
+            submit({ file: fileContent, messages: chatHistory });
+        } else {
+            submit({ messages: chatHistory });
+        }
+    };
 
-                                    <div className="flex flex-row">
-                                        <RegenerateButton submitObject={submitObject} isLoading={isLoadingObject} />
-                                        <DownloadButton isLoading={isLoadingObject} />
-                                    </div>
-                                </div>
-                                <Separator className="my-0" />
-                            </div>
-                        )}
-                        <div className="grid grid-cols-1 gap-4 mt-4 w-full">
-                            {flashcardsObject && flashcardsObject.flashcards?.map((flashcard, index) => (
-                                <FlashcardCard key={index} flashcard={flashcard} />
-                            ))}
-                        </div>
-                    </div>
-                </>
+    if (chatHistory.length === 0) return (
+        <div className="flex flex-col items-center justify-center space-y-4 mt-24 w-full max-w-lg">
+            <h1 className="font-medium text-4xl mt-4 cursor-pointer hover:text-primary/75 transition-colors" onClick={() => window.location.reload()}> md2anki</h1>
+            {(!file) ? (
+                <FileInput setFile={setFile} />
             ) : (
-                <div className="flex flex-col items-center justify-center w-full max-w-xl">
-                    <FileInput setFile={setFile} />
-                </div>
+                <FileCard file={file} setFile={setFile} />
             )}
-        </div >
+            <ChatInput file={file} onSubmit={handleSubmit} isLoading={isLoading} />
+        </div>
+    )
+
+    if (file && chatHistory.length > 0) return (
+        <ResizablePanelGroup direction="horizontal" className=" pt-4">
+            <ResizablePanel defaultSize={35} className="pl-4 mb-4">
+                <ChatInterface
+                    chatHistory={chatHistory}
+                    onSubmit={handleSubmit}
+                    isLoading={isLoading}
+                    message={object?.response}
+                    stop={stop}
+                />
+            </ResizablePanel>
+            <ResizableHandle className="bg-transparent" />
+            <ResizablePanel defaultSize={65} className="pl-4">
+                <Tabs defaultValue="flashcards" className="flex flex-col flex-grow h-full">
+                    <div className="flex items-center justify-between">
+                        <TabsList>
+                            <TabsTrigger value="flashcards">Flashcards</TabsTrigger>
+                            <TabsTrigger value={file.name}>{file.name}</TabsTrigger>
+                        </TabsList>
+                    </div>
+                    <TabsContent value="flashcards" className="flex-grow overflow-auto mb-4">
+                        <ScrollArea className="w-full">
+                            <div className="grid grid-cols-1 gap-4 w-full pr-4">
+                                {object?.flashcards?.map((flashcard, index) => (
+                                    <FlashcardCard key={index} flashcard={flashcard} />
+                                ))}
+                            </div>
+                        </ScrollArea>
+                    </TabsContent>
+                    <TabsContent value={file.name} className="flex-grow overflow-auto mb-4 border-2 rounded-lg">
+                        <MarkdownViewer file={file} />
+                    </TabsContent>
+                </Tabs>
+            </ResizablePanel>
+        </ResizablePanelGroup>
     );
 }

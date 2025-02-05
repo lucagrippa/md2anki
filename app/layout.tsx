@@ -17,30 +17,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className + " min-h-screen"}>
-        <main className="flex flex-col items-center min-h-screen">
+      <body className={inter.className + " h-dvh"}>
+        <main className="flex flex-col items-center h-full">
           {children}
         </main>
-        <footer className="fixed bottom-0 left-0 right-0 p-4 bg-background flex flex-col">
-          <div className="flex flex-row justify-center md:justify-between font-mono text-muted-foreground text-sm">
-            <div className="hidden md:block">
-              <a className="" href="https://lucagrippa.io" >lucagrippa </a>
-            </div>
-            <div>
-              Built with{" "}
-              <a className="" href="https://sdk.vercel.ai" > Vercel AI SDK </a>
-              &{" "}
-              <a className="" href="https://openai.com/index/gpt-4o-mini-advancing-cost-efficient-intelligence/" > GPT-4o mini</a>
-            </div>
-            <div className="hidden md:block">
-              <a className="" href="https://github.com/lucagrippa/md2anki">source</a>
-              {" / "}
-              <a className="" href="https://md2anki.canny.io">features</a>
-
-            </div>
-          </div>
-
-        </footer>
         <Toaster />
       </body>
     </html>
