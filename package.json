@@ -35,7 +35,7 @@
     "@vercel/functions": "^1.0.2",
     "@vercel/kv": "^0.2.4",
     "@vercel/otel": "^1.10.0",
-    "ai": "^4.1.18",
+    "ai": "^4.1.21",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.5",
