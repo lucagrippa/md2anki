@@ -20,7 +20,7 @@ export function MarkdownViewer({ file }: MarkdownViewerProps) {
     ), [content])
 
     return (
-        <ScrollArea className="w-full  p-4">
+        <ScrollArea className="w-full p-6">
             <div className="prose dark:prose-invert max-w-none prose-sm">
                 {memoizedMarkdown}
             </div>
