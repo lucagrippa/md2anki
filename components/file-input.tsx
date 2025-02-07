@@ -6,23 +6,24 @@ import { useToast } from "@/components/ui/use-toast";
 
 type FileInputProps = {
     setFile: React.Dispatch<React.SetStateAction<File | null>>;
-    // setFile: (file: File | null) => void;
+    onSubmit: (query: string, file?: File) => void;
 };
 
-export function FileInput({ setFile }: FileInputProps) {
+export function FileInput({ setFile, onSubmit }: FileInputProps) {
     const { toast } = useToast()
     const [isDragging, setIsDragging] = useState(false);
 
     const handleFileChange = useCallback((file: File) => {
         if (file.name.endsWith('.md')) {
             setFile(file);
+            onSubmit("", file);
         } else {
             toast({
                 description: "Unsupported file type. Please upload a markdown (.md) file.",
                 variant: "destructive",
             });
         }
-    }, [setFile, toast]);
+    }, [setFile, onSubmit, toast]);
 
     const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
         event.preventDefault();
