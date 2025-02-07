@@ -16,7 +16,7 @@ export function DownloadButton({ isLoading }: DownloadButtonProps) {
         <TooltipProvider>
             <Tooltip>
                 <TooltipTrigger asChild>
-                    <Button variant="secondary" size="icon" disabled={isLoading === true} onClick={() => downloadDeck()} className="">
+                    <Button variant="ghost" size="icon" disabled={isLoading === true} onClick={() => downloadDeck()} className="rounded-lg">
                         <ArrowDownToLine className="h-4 w-4" />
                     </Button>
                 </TooltipTrigger>
