@@ -17,7 +17,7 @@ export function FlashcardCard({ flashcard }: { flashcard: DeepPartial<Flashcard>
     return (
         <Card
             key={flashcard?.question}
-            className="flex flex-row relative group cursor-pointer hover:shadow-md"
+            className="flex flex-row relative group cursor-pointer hover:shadow-md border-2"
             onClick={() => ""}
         >
             {/* <div
@@ -27,7 +27,7 @@ export function FlashcardCard({ flashcard }: { flashcard: DeepPartial<Flashcard>
                 <X className="h-4 w-4" />
                 <span className="sr-only">Delete flashcard</span>
             </div> */}
-            <div className="grid grid-cols-5 gap-4 my-4 mx-4 ">
+            <div className="grid grid-cols-5 gap-4 my-4 mx-4">
                 <div className="flex flex-row flex-wrap col-span-2 text-sm items-center">
                     <div className="flex-1 min-w-0">
                         {flashcard?.question ? flashcard?.question : <Skeleton className="w-[100px] h-[20px] rounded-full" />}
