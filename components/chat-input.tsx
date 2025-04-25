@@ -41,7 +41,7 @@ export function ChatInput({ file, onSubmit, isLoading }: ChatInputProps) {
                 onKeyDown={handleKeyPress}
             />
             <Button variant="ghost" size="icon" disabled={isLoading || !file} onClick={handleSubmit} className="rounded-full text-gray-500 hover:text-gray-800">
-                <CircleArrowUp className="h-6 w-6 mx-2 " />
+                <CircleArrowUp className="h-6 w-6 mx-2 hover:text-blue-500" stroke="currentColor"/>
             </Button>
         </div>
     )

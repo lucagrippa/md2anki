@@ -32,6 +32,9 @@ export default function GenerateDeck() {
     const { object, submit, isLoading, stop } = useObject({
         api: "/api/generate",
         schema: flashcardSchemaObject,
+        onResponse: (response) => {
+            console.log("response", response);
+        },
         onFinish: (result) => {
             setFlashcards(result.object?.flashcards || []);
             const assistantMessage = {
@@ -40,9 +43,17 @@ export default function GenerateDeck() {
                 id: crypto.randomUUID()
             } as Message;
             setChatHistory(prevChatHistory => [...prevChatHistory, assistantMessage]);
-            // object?.response  = ""
         },
     });
+
+    const updateFlashcard = (index: number, flashcard: { question: string; answer: string }) => {
+        setFlashcards(prevFlashcards => prevFlashcards.map((f, i) => i === index ? { ...f, ...flashcard } : f));
+    };
+
+    const deleteFlashcard = (index: number) => {
+        setFlashcards(prevFlashcards => prevFlashcards.filter((_, i) => i !== index));
+    };
+
 
     const handleSubmit = async (query: string, submittedFile?: File) => {
         console.log("query", query);
@@ -104,7 +115,7 @@ export default function GenerateDeck() {
                         <ScrollArea className="w-full">
                             <div className="grid grid-cols-1 gap-4 w-full pr-3">
                                 {object?.flashcards?.map((flashcard, index) => (
-                                    <FlashcardCard key={index} flashcard={flashcard} />
+                                    <FlashcardCard key={index} flashcard={flashcard} index={index} updateFlashcard={updateFlashcard} deleteFlashcard={deleteFlashcard} />
                                 ))}
                             </div>
                         </ScrollArea>

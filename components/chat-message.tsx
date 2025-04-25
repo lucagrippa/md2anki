@@ -12,7 +12,7 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message, className }: ChatMessageProps) {
     return (
-        <div key={message.id} className={`flex flex-row mb-4 ${message.role === 'user' ? 'justify-end' : 'justify-start'
+        <div key={message.id} className={`flex flex-row mb-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'
             } ${className}`}>
             <div
                 className={`relative inline-block py-2 px-3 rounded-xl text-sm ${message.role === 'user'

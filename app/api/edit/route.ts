@@ -1,6 +1,6 @@
 import { flashcardSchemaObject } from "@/lib/schema";
 import { openai } from "@ai-sdk/openai";
-import { streamObject, Message, streamText } from "ai";
+import { streamObject, Message } from "ai";
 import { Langfuse } from "langfuse";
 import { randomUUID } from "crypto";
 
@@ -16,21 +16,19 @@ const systemPrompt = fs.readFileSync(promptPath, 'utf8');
 export async function POST(request: Request) {
     // Parse the request body
     // console.log("request", request);
-    const { fileName, fileContent, messages, flashcards } = await request.json();
+    const { file, messages, flashcards } = await request.json();
     console.log("messages:", messages);
-    console.log("flashcards:", flashcards);
-    console.log("fileName:", fileName);
-    console.log("fileContent:", fileContent);
-
+    console.log("file:", file);
 
     const langfuse = new Langfuse({
         secretKey: process.env.LANGFUSE_API_KEY,
         publicKey: process.env.LANGFUSE_API_KEY,
         baseUrl: "https://us.cloud.langfuse.com", // 🇺🇸 US region
     });
+    const parentTraceId = randomUUID();
 
     langfuse.trace({
-        id: randomUUID(),
+        id: parentTraceId,
         name: "generate-flashcards",
     });
 
@@ -38,12 +36,15 @@ export async function POST(request: Request) {
         schema: flashcardSchemaObject,
         output: "object",
         model: openai("gpt-4o-mini-2024-07-18"),
-        messages: [
-            { role: "system", content: systemPrompt },
-            { role: "user", content: `File: ${fileName} \n\n ${fileContent}` },
-            ...messages,
-            { role: "user", content: `Current flashcards: ${JSON.stringify(flashcards)}` },
-        ],
+        messages: [{ role: "system", content: systemPrompt }, { role: "user", content: file }, ...messages],
+        providerOptions: {
+            openai: {
+                prediction: {
+                    type: 'content',
+                    content: flashcards,
+                },
+            },
+        },
         experimental_telemetry: { isEnabled: true },
         onFinish: async (result) => {
             // save result to 
@@ -53,5 +54,4 @@ export async function POST(request: Request) {
     });
 
     return result.toTextStreamResponse();
-
 }

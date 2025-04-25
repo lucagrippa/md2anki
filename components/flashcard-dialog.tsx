@@ -1,3 +1,6 @@
+import { DeepPartial } from "ai";
+import { Trash2 } from 'lucide-react';
+
 import { Button } from "@/components/ui/button"
 import {
     DialogDescription,
@@ -9,16 +12,17 @@ import {
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 
-import { PartialFlashcard } from "../app/schema";
+import { Flashcard } from "@/lib/schema";
 
 interface DialogProps {
-    flashcard: PartialFlashcard | undefined;
+    flashcard: DeepPartial<Flashcard> | undefined;
     index: number;
     updateFlashcard: (index: number, flashcard: { question: string; answer: string }) => void;
+    deleteFlashcard: (index: number) => void;
 }
 
 
-export function FlashcardDialog({ flashcard, index, updateFlashcard }: DialogProps) {
+export function FlashcardDialog({ flashcard, index, updateFlashcard, deleteFlashcard }: DialogProps) {
     return (
         <>
             <DialogHeader>
@@ -62,10 +66,23 @@ export function FlashcardDialog({ flashcard, index, updateFlashcard }: DialogPro
                         />
                     </div>
                 </div>
-                <DialogFooter>
-                    <DialogClose asChild>
-                        <Button type="submit">Save changes</Button>
+                <DialogFooter className="sm:justify-between">
+                    <DialogClose asChild className="my-0.5 sm:my-0">
+                        <Button type="button" variant="destructive" onClick={() => { deleteFlashcard(index) }}>
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Delete
+                        </Button>
                     </DialogClose>
+                    <div className="flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end sm:space-x-2">
+                        <DialogClose asChild className="my-0.5 sm:my-0">
+                            <Button type="button" variant="outline">
+                                Cancel
+                            </Button>
+                        </DialogClose>
+                        <DialogClose asChild className="my-0.5 sm:my-0">
+                            <Button type="submit">Save changes</Button>
+                        </DialogClose>
+                    </div>
                 </DialogFooter>
             </form>
         </>
